@@ -1,4 +1,6 @@
-# [React Native](https://facebook.github.io/react-native/) &middot;  [![Circle CI Status](https://circleci.com/gh/facebook/react-native.svg?style=shield)](https://circleci.com/gh/facebook/react-native) [![npm version](https://badge.fury.io/js/react-native.svg)](https://badge.fury.io/js/react-native) [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md#pull-requests)
+# [React Native](https://facebook.github.io/react-native/) &middot;  [![Travis CI Status](https://travis-ci.org/facebook/react-native.svg?branch=master)](https://travis-ci.org/facebook/react-native) [![Circle CI Status](https://circleci.com/gh/facebook/react-native.svg?style=shield)](https://circleci.com/gh/facebook/react-native) [![npm version](https://badge.fury.io/js/react-native.svg)](https://badge.fury.io/js/react-native) [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md#pull-requests)
+
+**Branch 0.47-stable is modified (via building from source) and have required files packaged, serving as temporary react-native package for naluri-client until stable v.0.51 is released**
 
 Learn once, write anywhere: Build mobile apps with React.
 
@@ -17,10 +19,9 @@ Supported operating systems are >= Android 4.1 (API 16) and >= iOS 8.0.
 - [Getting Help](#getting-help)
 - [Documentation](#documentation)
 - [Upgrading](#upgrading)
+- [Opening Issues](#opening-issues)
 - [Contributing](#contributing)
 - [License](#license)
-
----
 
 ## Getting Started
 
@@ -30,11 +31,9 @@ Follow the [Getting Started guide](https://facebook.github.io/react-native/docs/
 - [Creating a New Application](http://facebook.github.io/react-native/docs/getting-started.html)
 - [Adding React Native to an Existing Application](http://facebook.github.io/react-native/docs/integration-with-existing-apps.html)
 
----
-
 ## Documentation
 
-[The website’s documentation](https://facebook.github.io/react-native/docs/getting-started.html) is divided into multiple sections.
+[The website’s documentation](https://facebook.github.io/react-native/docs/) is divided into multiple sections.
 - There are **Guides** that discuss topics like [debugging](https://facebook.github.io/react-native/docs/debugging.html), [integrating with existing apps](https://facebook.github.io/react-native/docs/integration-with-existing-apps.html), and [the gesture responder system](https://facebook.github.io/react-native/docs/gesture-responder-system.html).
 - The **Components** section covers React components such as [`View`](https://facebook.github.io/react-native/docs/view.html) and [`Button`](https://facebook.github.io/react-native/docs/button.html).
 - The **APIs** section covers other libraries like [Animated](https://facebook.github.io/react-native/docs/animated.html) and [StyleSheet](https://facebook.github.io/react-native/docs/stylesheet.html) that aren’t React components themselves.
@@ -44,13 +43,9 @@ Another great way to learn more about the components and APIs included with Reac
 
 The React Native documentation only discusses the components, APIs and topics specific to React Native (React on iOS and Android). For further documentation on the React API that is shared between React Native and React DOM, refer to the [React documentation](https://facebook.github.io/react/).
 
----
-
 ## Upgrading
 
 React Native is under active development. See the guide on [upgrading React Native](https://facebook.github.io/react-native/docs/upgrading.html) to keep your project up-to-date.
-
----
 
 ## Contributing
 
@@ -66,16 +61,10 @@ Read our [contributing guide](https://facebook.github.io/react-native/docs/contr
 
 ### Beginner Friendly Bugs
 
-We have a list of [beginner friendly issues](https://github.com/facebook/react-native/labels/Good%20First%20Issue) to help you get your feet wet in the React Native codebase and familiar with our contribution process. This is a great place to get started.
-
----
+We have a list of [beginner friendly issues](https://github.com/facebook/react-native/labels/Good%20First%20Task) to help you get your feet wet in the React Native codebase and familiar with our contribution process. This is a great place to get started.
 
 ## License
 
-React Native is [BSD licensed](./LICENSE). We also provide an additional [patent grant](./PATENTS).
+React is [BSD licensed](./LICENSE). We also provide an additional [patent grant](./PATENTS).
 
-React Native documentation is [Creative Commons licensed](./LICENSE-docs).
-
----
-
-<img src="https://avatars2.githubusercontent.com/u/69631?s=200&v=4" width="50"></img>
+React documentation is [Creative Commons licensed](./LICENSE-docs).
