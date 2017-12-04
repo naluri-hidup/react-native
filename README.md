@@ -1,5 +1,7 @@
 # [React Native](https://facebook.github.io/react-native/) &middot;  [![Travis CI Status](https://travis-ci.org/facebook/react-native.svg?branch=master)](https://travis-ci.org/facebook/react-native) [![Circle CI Status](https://circleci.com/gh/facebook/react-native.svg?style=shield)](https://circleci.com/gh/facebook/react-native) [![npm version](https://badge.fury.io/js/react-native.svg)](https://badge.fury.io/js/react-native) [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md#pull-requests)
 
+**Branch 0.47-stable is modified (via building from source) and have required files packaged, serving as temporary react-native package for naluri-client until stable v.0.51 is released**
+
 Learn once, write anywhere: Build mobile apps with React.
 
 - **Build native mobile apps using JavaScript and React:** React Native lets you build mobile apps using only JavaScript. It uses the same design as [React](https://facebook.github.io/react), letting you compose a rich mobile UI from declarative components.
