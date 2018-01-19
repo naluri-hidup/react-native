@@ -61,6 +61,9 @@ import com.facebook.react.views.webview.events.TopMessageEvent;
 import org.json.JSONObject;
 import org.json.JSONException;
 
+import android.widget.RelativeLayout;
+import android.view.ViewGroup;
+
 /**
  * Manages instances of {@link WebView}
  *
@@ -355,9 +358,10 @@ public class ReactWebViewManager extends SimpleViewManager<WebView> {
     webView.getSettings().setDomStorageEnabled(true);
 
     // Fixes broken full-screen modals/galleries due to body height being 0.
-    webView.setLayoutParams(
-            new LayoutParams(LayoutParams.MATCH_PARENT,
-                LayoutParams.MATCH_PARENT));
+
+    RelativeLayout.LayoutParams relativeParams = new RelativeLayout.LayoutParams(
+      ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+    webView.setLayoutParams(relativeParams);
 
     if (ReactBuildConfig.DEBUG && Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
       WebView.setWebContentsDebuggingEnabled(true);
