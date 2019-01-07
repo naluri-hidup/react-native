@@ -19,6 +19,7 @@ import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
+import android.os.Build;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -51,10 +52,12 @@ public class ReactScrollView extends ScrollView implements ReactClippingViewGrou
   private final OverScroller mScroller;
   private final VelocityHelper mVelocityHelper = new VelocityHelper();
 
+  private boolean mActivelyScrolling;
   private @Nullable Rect mClippingRect;
   private boolean mDoneFlinging;
   private boolean mDragging;
   private boolean mFlinging;
+  private @Nullable Runnable mPostTouchRunnable;
   private boolean mRemoveClippedSubviews;
   private boolean mScrollEnabled = true;
   private boolean mSendMomentumEvents;
@@ -245,6 +248,8 @@ public class ReactScrollView extends ScrollView implements ReactClippingViewGrou
 
   @Override
   public void fling(int velocityY) {
+    final int correctedVelocityY = (int)(Math.abs(velocityY) * Math.signum(mOnScrollDispatchHelper.getYFlingVelocity()));
+
     if (mScroller != null) {
       // FB SCROLLVIEW CHANGE
 
@@ -257,43 +262,74 @@ public class ReactScrollView extends ScrollView implements ReactClippingViewGrou
       int scrollWindowHeight = getHeight() - getPaddingBottom() - getPaddingTop();
 
       mScroller.fling(
-        getScrollX(),
-        getScrollY(),
-        0,
-        velocityY,
-        0,
-        0,
-        0,
-        Integer.MAX_VALUE,
-        0,
-        scrollWindowHeight / 2);
+              getScrollX(),
+              getScrollY(),
+              0,
+              correctedVelocityY,
+              0,
+              0,
+              0,
+              Integer.MAX_VALUE,
+              0,
+              scrollWindowHeight / 2);
 
       postInvalidateOnAnimation();
 
       // END FB SCROLLVIEW CHANGE
     } else {
-      super.fling(velocityY);
+      super.fling(correctedVelocityY);
     }
 
-    if (mSendMomentumEvents || isScrollPerfLoggingEnabled()) {
-      mFlinging = true;
+    handlePostTouchScrolling(0, correctedVelocityY);
+  }
+
+  private void handlePostTouchScrolling(int velocityX, int velocityY) {
+    // If we aren't going to do anything (send events or snap to page), we can early exit out.
+    if (!mSendMomentumEvents && !isScrollPerfLoggingEnabled()) {
+      return;
+    }
+
+    // Check if we are already handling this which may occur if this is called by both the touch up
+    // and a fling call
+    if (mPostTouchRunnable != null) {
+      return;
+    }
+
+    if (mSendMomentumEvents) {
       enableFpsListener();
-      ReactScrollViewHelper.emitScrollMomentumBeginEvent(this);
-      Runnable r = new Runnable() {
-        @Override
-        public void run() {
-          if (mDoneFlinging) {
-            mFlinging = false;
-            disableFpsListener();
-            ReactScrollViewHelper.emitScrollMomentumEndEvent(ReactScrollView.this);
+      ReactScrollViewHelper.emitScrollMomentumBeginEvent(ReactScrollView.this); //, velocityX, velocityY);
+    }
+
+    mActivelyScrolling = false;
+    mPostTouchRunnable = new Runnable() {
+
+      private boolean mSnappingToPage = false;
+
+      @Override
+      public void run() {
+        if (mActivelyScrolling) {
+          // We are still scrolling so we just post to check again a frame later
+          mActivelyScrolling = false;
+          postOnAnimationDelayed(this, ReactScrollViewHelper.MOMENTUM_DELAY);
+        } else {
+          if (!mSnappingToPage) {
+            // Only if we have pagingEnabled and we have not snapped to the page do we
+            // need to continue checking for the scroll.  And we cause that scroll by asking for it
+            mSnappingToPage = true;
+//            flingAndSnap(0);
+            postOnAnimationDelayed(this,ReactScrollViewHelper.MOMENTUM_DELAY);
           } else {
-            mDoneFlinging = true;
-            ReactScrollView.this.postOnAnimationDelayed(this, ReactScrollViewHelper.MOMENTUM_DELAY);
+            if (mSendMomentumEvents) {
+              ReactScrollViewHelper.emitScrollMomentumEndEvent(ReactScrollView.this);
+            }
+            ReactScrollView.this.mPostTouchRunnable = null;
+            disableFpsListener();
           }
         }
-      };
-      postOnAnimationDelayed(r, ReactScrollViewHelper.MOMENTUM_DELAY);
-    }
+      }
+    };
+    postOnAnimationDelayed(mPostTouchRunnable,
+            ReactScrollViewHelper.MOMENTUM_DELAY);
   }
 
   private void enableFpsListener() {
